@@ -10,6 +10,7 @@
   "scripts": {
     "test": "pull"
   },
+  "engine": "node 0.10.x",
   "author": "R.J. Steinert",
   "license": "ISC"
 }
