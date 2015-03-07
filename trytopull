@@ -2,7 +2,7 @@
 
 var timeout = 1000
 
-var thermometers=require("temper1v1");
+var thermometers=require("temper1x");
 var devices = thermometers.getDevices();
 
 thermometers.readTemperature(devices[0], function(err, value) {
