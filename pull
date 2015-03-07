@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+var thermometers=require("temper1");
+
+var devices=thermometers.getDevices();
+console.log("Devices found:"+devices);
+thermometers.readTemperature(devices[0], function(err, value) {
+  if (err) console.log(err)
+  console.log(value);
+});
