@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
-var exec = require('child_process').exec;
-var timeout = 100
-var program = require('commander');
+var temper1x = require("temper1x")
+var program = require('commander')
  
+var devices = temper1x.getDevices()
 program
   .version('0.0.0')
   .option('-p, --path [path]', 'Set a path to the temper1 device. Detect the path by running the detect command.', '')
-  .parse(process.argv);
+  .parse(process.argv)
 
 if (program.path == '') {
   console.log('You must define a path to the temper1 USB sensor.')
@@ -20,19 +20,7 @@ if (program.path == '') {
   })
 }
 
-var poll = function() {
-  var cmd = './try --path ' + program.path
-  var child = exec(cmd, function(err, stdout, stderr) {
-    if (stdout) {
-      console.log(stdout)
-      process.exit(1)
-    }
-  })
-  setTimeout(function() {
-    child.kill('SIGKILL')
-    poll()
-  }, timeout)
-}
-
-poll()
-
+temper1x.readTemperature(program.path, function(err, value) {
+  if (err) console.log(err)
+  console.log(value)
+})
