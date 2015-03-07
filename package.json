@@ -4,7 +4,7 @@
   "description": "Open Pipe Kit driver for temper1",
   "main": "pull",
   "dependencies": {
-    "temper1": "~0.0.3"
+    "temper1x": "0.0.0"
   },
   "devDependencies": {},
   "scripts": {

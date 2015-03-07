@@ -1,10 +1,19 @@
 #!/usr/bin/env node
 
-var thermometers=require("temper1");
+var exec = require('child_process').exec;
+var timeout = 100
 
-var devices=thermometers.getDevices();
-console.log("Devices found:"+devices);
-thermometers.readTemperature(devices[0], function(err, value) {
-  if (err) console.log(err)
-  console.log(value);
-});
+var poll = function() {
+  var cmd = './trytopull'
+  var child = exec(cmd, function(err, stdout, stderr) {
+    if (stdout) {
+      console.log(stdout)
+      process.exit(1)
+    }
+  })
+  setTimeout(function() {
+    child.kill('SIGKILL')
+    poll()
+  }, timeout)
+}
+poll()

@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+
+var timeout = 1000
+
+var thermometers=require("temper1v1");
+var devices = thermometers.getDevices();
+
+thermometers.readTemperature(devices[0], function(err, value) {
+  if (err) console.log(err)
+  console.log(value);
+});
