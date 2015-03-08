@@ -1,12 +1,18 @@
 #!/usr/bin/env node
 
 var exec = require('child_process').exec;
-var timeout = 100
 var program = require('commander');
+var log = function(msg) {
+  if (program.verbose) {
+    console.log(msg)
+  }
+}
  
 program
   .version('0.0.0')
   .option('-p, --path [path]', 'Set a path to the temper1 device. Detect the path by running the detect command.', '')
+  .option('-t, --timeout [timeout]', 'How long before trying the `try` command again. If you are on a slow system you may need to increase this.', '1000')
+  .option('--verbose')
   .parse(process.argv);
 
 if (program.path == '') {
@@ -21,7 +27,9 @@ if (program.path == '') {
 }
 
 var poll = function() {
+  log('trying...')
   var cmd = __dirname + '/try --path ' + program.path
+  log(cmd)
   var child = exec(cmd, function(err, stdout, stderr) {
     if (stdout) {
       console.log(stdout)
@@ -31,7 +39,7 @@ var poll = function() {
   setTimeout(function() {
     child.kill('SIGKILL')
     poll()
-  }, timeout)
+  }, program.timeout)
 }
 
 poll()
