@@ -21,7 +21,7 @@ if (program.path == '') {
 }
 
 var poll = function() {
-  var cmd = './try --path ' + program.path
+  var cmd = __dirname + '/try --path ' + program.path
   var child = exec(cmd, function(err, stdout, stderr) {
     if (stdout) {
       console.log(stdout)
