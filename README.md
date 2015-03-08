@@ -2,3 +2,18 @@ A command line interface for interacting with the temper1 sensor from PCSensor.c
 
 # Requirements
 Requires nodejs v0.10.x because the node-hid dependency does not support anything higher. But they are [working on it](https://github.com/node-hid/node-hid/pull/69).
+
+# Usage
+Command line example:
+
+```
+$ ./install
+installing...
+done.
+$ ./detect
+Found temper1 at path:
+USB_0c45_7401_14100000
+USB_0c45_7401_14100000
+$ ./pull --path USB_0c45_7401_14100000
+42
+```
