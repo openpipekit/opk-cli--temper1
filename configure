@@ -1,0 +1,18 @@
+#!/usr/bin/env node
+
+var thermometers=require("temper1x");
+var devices = thermometers.getDevices();
+console.log('Example usage:')
+console.log('')
+console.log('./pull --path USB_0c45_7401_fa130000')
+console.log('')
+console.log("Detected Temper1 device(s) with the following paths:")
+devices.forEach(function(device) { 
+  console.log(device)
+})
+console.log('')
+console.log('Configure a pipe with something like:')
+console.log('')
+console.log('pipe config opk-temper1-cli.path USB_0c45_7401_fa130000')
+console.log('')
+
