@@ -6,7 +6,7 @@ exec('which rpi-update', function(err, stdout, stderr) {
   if (stdout) {
     console.log('Installing for Raspbian...')
     // We are on raspbian, try nonstandard install
-    var child = exec('cd ' + __dirname + '; npm install commander; cd node_modules; git clone git@github.com:rjsteinert/temper1x.raspbian.git; mv temper1x.raspbian temper1x;')
+    var child = exec('cd ' + __dirname + '; npm install commander; cd node_modules; git clone https://github.com/rjsteinert/temper1x.raspbian.git; mv temper1x.raspbian temper1x;')
     child.stdout.on('data', function(data) {
       console.log(data)
     })
