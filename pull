@@ -7,7 +7,7 @@ var log = function(msg) {
     console.log(msg)
   }
 }
-
+console.log('temper1')
 program
   .version('0.2.0')
   .option('-p, --path <path>', 'Set a path to the temper1 device. Detect the path by running the detect command.', '')
@@ -41,6 +41,6 @@ var sendOutput = function(output) {
   output = parseFloat(output)
   if (output > (lastOutput + program.threshold) || output < (lastOutput - program.threshold)) {
     lastOutput = output
-    process.stdout.write(output + ',')
+    process.stdout.write(output + '\n')
   }
 }
