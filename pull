@@ -7,11 +7,11 @@ var log = function(msg) {
     console.log(msg)
   }
 }
- 
+
 program
-  .version('0.0.0')
+  .version('0.2.0')
   .option('-p, --path <path>', 'Set a path to the temper1 device. Detect the path by running the detect command.', '')
-  .option('-t, --timeout [timeout]', 'How long before trying the `try` command again. If you are on a slow system you may need to increase this.', 3000)
+  .option('-t, --timeout [timeout]', 'How long before trying the `try` command again. If you are on a slow system you may need to increase this.', 8000)
   .option('-s, --scale [scale]', 'Say farenheit if you dont want celsius.', 'celsius')
   .option('-v, --verbose', 'Turn on verbose mode')
   .parse(process.argv);
@@ -23,15 +23,18 @@ var poll = function() {
   log(cmd)
   var child = exec(cmd, function(err, stdout, stderr) {
     if (stdout) {
-      console.log(stdout)
-      process.exit(0)
+      child.kill('SIGKILL')
+      sendOutput(stdout)
     }
   })
   setTimeout(function() {
     child.kill('SIGKILL')
-    poll()
   }, program.timeout)
 }
 
+setInterval(poll, program.timeout)
 poll()
 
+var sendOutput = function(output) {
+  process.stdout.write(output.trim() + ',')
+}
