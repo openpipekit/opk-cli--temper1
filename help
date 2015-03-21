@@ -4,8 +4,12 @@ var thermometers=require("temper1x");
 var devices = thermometers.getDevices();
 
 console.log('./pull')
-console.log('  --path')
-devices.forEach(function(device) { 
+console.log('  --path <path>')
+devices.forEach(function(device) {
   console.log('      ' + device)
 })
-
+console.log('  --timeout [timeout], How long before trying the `try` command again. If you are on a slow system you may need to increase this.')
+console.log('  --scale [scale]')
+console.log('    celsius')
+console.log('    farenheit')
+console.log('  --verbose', 'Turn on verbose mode')

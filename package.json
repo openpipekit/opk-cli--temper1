@@ -1,6 +1,6 @@
 {
   "name": "opk-temper1",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Open Pipe Kit driver for temper1",
   "main": "pull",
   "dependencies": {
