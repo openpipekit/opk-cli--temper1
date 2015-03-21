@@ -1,19 +1,35 @@
 #!/usr/bin/env node
 
+/*
+ * Set up and then run pull
+ */
+ 
+// Parse the arguments from the command as parameters for the pull function.
 var params = parseArgv(process.argv)
+// Log to the screen. Will only log if --verbose flag is added to the command.
 log(params)
+// For arguments not set, apply defaults.
 if (!params.hasOwnProperty('timeout')) params.timeout = 3000
 if (!params.hasOwnProperty('scale')) params.scale = 'celsius'
+// Run the pull command!
 pull(params)
 
 /*
  * Functions
  */
 
+// This pull command features timeout. That means it will run a try command
+// that if it does not hear back from, it will kill the child process and
+// run it again. That darn temper1 sensor is finicky, sometimes returning
+// a value in 200 milliseconds, sometimes never.
 function pull(params) {
   var exec = require('child_process').exec;
   log('trying...')
-  var cmd = __dirname + '/try --path ' + params.path + ' --scale ' + params.scale
+  var cmd =
+    __dirname +
+    '/try' +
+      ' --path ' + params.path +
+      ' --scale ' + params.scale
   if (params.verbose) cmd += ' --verbose'
   log(cmd)
   var child = exec(cmd, function(err, stdout, stderr) {
@@ -28,6 +44,10 @@ function pull(params) {
   }, params.timeout)
 }
 
+// This is the standard function for parsing process.argv. It will return
+// an object that where `--argumentName` is a property name and the
+// proceding argument is the value. If there is no proceeding value then
+// it will be interpreted as a boolean true.
 function parseArgv(argv) {
   params = {}
   argv.forEach(function(arg, i) {
