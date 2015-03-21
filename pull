@@ -1,25 +1,20 @@
 #!/usr/bin/env node
 
-var exec = require('child_process').exec;
-var program = require('commander');
-var log = function(msg) {
-  if (program.verbose) {
-    console.log(msg)
-  }
-}
- 
-program
-  .version('0.0.0')
-  .option('-p, --path <path>', 'Set a path to the temper1 device. Detect the path by running the detect command.', '')
-  .option('-t, --timeout [timeout]', 'How long before trying the `try` command again. If you are on a slow system you may need to increase this.', 3000)
-  .option('-s, --scale [scale]', 'Say farenheit if you dont want celsius.', 'celsius')
-  .option('-v, --verbose', 'Turn on verbose mode')
-  .parse(process.argv);
+var params = parseArgv(process.argv)
+log(params)
+if (!params.hasOwnProperty('timeout')) params.timeout = 3000
+if (!params.hasOwnProperty('scale')) params.scale = 'celsius'
+pull(params)
 
-var pull = function() {
+/*
+ * Functions
+ */
+
+function pull(params) {
+  var exec = require('child_process').exec;
   log('trying...')
-  var cmd = __dirname + '/try --path ' + program.path + ' --scale ' + program.scale
-  if (program.verbose) cmd += ' --verbose'
+  var cmd = __dirname + '/try --path ' + params.path + ' --scale ' + params.scale
+  if (params.verbose) cmd += ' --verbose'
   log(cmd)
   var child = exec(cmd, function(err, stdout, stderr) {
     if (stdout) {
@@ -29,9 +24,30 @@ var pull = function() {
   })
   setTimeout(function() {
     child.kill('SIGKILL')
-    pull()
-  }, program.timeout)
+    pull(params)
+  }, params.timeout)
 }
 
-pull()
+function parseArgv(argv) {
+  params = {}
+  argv.forEach(function(arg, i) {
+    if (arg.substr(0, 2) == '--') {
+      paramName = arg.substr(2, arg.length)
+      nextArg = argv[i+1]
+      if (typeof nextArg == 'string' && nextArg.substr(0, 2) == '--') {
+        params[paramName] = true
+      }
+      else {
+        params[paramName] = nextArg
+      }
+    }
+  })
+  return params
+}
 
+// A log function that will only log if the --verbose flag is set
+function log(msg) {
+  if (params.hasOwnProperty('verbose')) {
+    console.log(msg)
+  }
+}
