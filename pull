@@ -34,7 +34,7 @@ function pull(params) {
   log(cmd)
   var child = exec(cmd, function(err, stdout, stderr) {
     if (stdout) {
-      console.log(stdout)
+      process.stdout.write(stdout.replace(/[\n\r]+/g, ''))
       process.exit(0)
     }
   })
