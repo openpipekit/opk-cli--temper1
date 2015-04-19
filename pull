@@ -25,23 +25,36 @@ pull(params)
 function pull(params) {
   var exec = require('child_process').exec;
   log('trying...')
-  var cmd =
-    __dirname +
-    '/try' +
-      ' --path ' + params.path +
-      ' --scale ' + params.scale
-  if (params.verbose) cmd += ' --verbose'
-  log(cmd)
-  var child = exec(cmd, function(err, stdout, stderr) {
-    if (stdout) {
-      process.stdout.write(stdout.replace(/[\n\r]+/g, ''))
-      process.exit(0)
-    }
-  })
-  setTimeout(function() {
-    child.kill('SIGKILL')
-    pull(params)
-  }, params.timeout)
+  function go() {
+    var cmd =
+      __dirname +
+      '/try' +
+        ' --path ' + params.path +
+        ' --scale ' + params.scale
+    if (params.verbose) cmd += ' --verbose'
+    log(cmd)
+    var child = exec(cmd, function(err, stdout, stderr) {
+      if (stdout) {
+        process.stdout.write(stdout.replace(/[\n\r]+/g, ''))
+        process.exit(0)
+      }
+    })
+    setTimeout(function() {
+      child.kill('SIGKILL')
+      pull(params)
+    }, params.timeout)
+  } 
+  if(params.hasOwnProperty('path')) {
+    go()
+  }
+  else {
+    var thermometers=require("temper1x");
+    var devices = thermometers.getDevices();
+    devices.forEach(function(device) { 
+      params.path = device
+    })
+    go()
+  }
 }
 
 // This is the standard function for parsing process.argv. It will return
