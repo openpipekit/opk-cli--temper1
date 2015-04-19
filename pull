@@ -35,7 +35,13 @@ function pull(params) {
     log(cmd)
     var child = exec(cmd, function(err, stdout, stderr) {
       if (stdout) {
-        process.stdout.write(stdout.replace(/[\n\r]+/g, ''))
+        var value = stdout.replace(/[\n\r]+/g, '')
+        if (params.hasOwnProperty('json')) {
+          process.stdout.write('{"' + params.json + '":' + value + '}')
+        }
+        else {
+          process.stdout.write(value)
+        }
         process.exit(0)
       }
     })
