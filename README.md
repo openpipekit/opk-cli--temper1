@@ -10,10 +10,10 @@ Command line example:
 $ ./install
 installing...
 done.
-$ ./detect
+$ sudo ./detect
 Found temper1 at path:
 USB_0c45_7401_14100000
 USB_0c45_7401_14100000
-$ ./pull --path USB_0c45_7401_14100000
+$ sudo ./pull --path USB_0c45_7401_14100000
 42
 ```
